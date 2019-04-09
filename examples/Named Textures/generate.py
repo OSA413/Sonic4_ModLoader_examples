@@ -66,3 +66,8 @@ for i in the_files:
     file, file_png = generate_and_save(file)
     convert_to_dds(file_png)
     os.remove(file_png)
+
+    #dealing with case sensitivity
+    if file[-1] == "S":
+        #test this on linux
+        os.rename(file[:-3]+"dds", file[:-3]+"DDS")
