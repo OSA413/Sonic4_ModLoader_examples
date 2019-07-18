@@ -1,0 +1,7 @@
+﻿This is an example mod that replaces ring sound with bell's jingle.
+[b]🌲Xmas❄spirit🎁all🔔the☕️year!☃[\b]
+
+[i]This mod is compatable with both episodes.[\i]
+
+The sound effect used in this mod is licensed under the CC0:
+https://freesound.org/people/Selector/sounds/369506/
