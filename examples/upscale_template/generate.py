@@ -46,7 +46,7 @@ def generate_and_save(file_png):
 
 
 the_files = glob.glob("./place root here/**/*.dds", recursive = True)
-print("asd")
+
 for i in range(len(the_files)):
     f = the_files[i]
     file = os.path.abspath(f.replace("\\", "/"))
@@ -58,7 +58,8 @@ for i in range(len(the_files)):
     convert_to_dds(file[:-3]+"png")
     os.remove(file[:-3]+"png")
 
-    #dealing with case sensitivity
-    if file[-1] == "S":
-        #test this on linux
-        os.rename(file[:-3]+"dds", file[:-3]+"DDS")
+    other_place = file.replace("place root here", "converted")
+    if not os.path.exists(os.path.dirname(other_place)):
+        os.makedirs(os.path.dirname(other_place))
+    os.rename(file, other_place)
+
