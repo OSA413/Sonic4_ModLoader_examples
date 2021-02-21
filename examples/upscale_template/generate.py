@@ -22,18 +22,16 @@ def convert_to_png(file_dds):
                    shell = True)
 
 def convert_to_dds(file_png):
-    """
-    Pillow can't export DDS at this moment
-    As for now I'll use ImageMagick to do this
-    P.S. - some old versions generate broken DDS
-    Tested versions:
-        Windows: 7.0.8
-    """
-    subprocess.run(PATH_TO_MOGRIFY +
-                    " -format dds -define dds:compression=dxt5 " +
-                    "\""+file_png+"\"",
-                   cwd = os.getcwd(),
-                   shell = True)
+    with open("gimp-convert.bat", "r") as f:
+        main_script = f.read()
+
+    with open("gimp-convert.fu", "r") as f:
+        script = f.read().replace("\n", " ").replace("{{filename}}", file_png) \
+            .replace("{{output}}", file_png[:-3]+"DDS").replace("\\", "\\\\").replace("\"", "\\\"")
+
+    subprocess.run(main_script + " \"" + script + "\" --batch \"(gimp-quit 1)\"",
+        cwd = os.getcwd(),
+        shell = True)
 
 def generate_and_save(file_png):
     subprocess.run(PATH_TO_WAIFU2X +
@@ -45,9 +43,11 @@ def generate_and_save(file_png):
 
 the_files = glob.glob("./place root here/**/*.dds", recursive = True)
 print("asd")
-for i in the_files:
-    file = os.path.abspath(i.replace("\\", "/"))
+for i in range(len(the_files)):
+    f = the_files[i]
+    file = os.path.abspath(f.replace("\\", "/"))
     print(file)
+    print(str(i) + "/" + str(len(the_files)))
     convert_to_png(file)
     generate_and_save(file[:-3]+"png")
     generate_and_save(file[:-3]+"png")
