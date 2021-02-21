@@ -1,0 +1,7 @@
+(
+    let* ((filename "{{filename}}")
+            (output "{{output}}")
+            (image (car (gimp-file-load 1 filename filename)))
+            (drawable (car (gimp-image-get-active-layer image))))
+    (file-png-save-defaults 1 image drawable output output)
+)

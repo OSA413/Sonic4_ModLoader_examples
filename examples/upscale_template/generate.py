@@ -11,21 +11,25 @@ from PIL import Image, ImageFont, ImageDraw#, DdsImagePlugin
 
 os.chdir(os.path.dirname(__file__))
 
-PATH_TO_MOGRIFY = os.path.abspath("../../dependencies/ImageMagick/mogrify")
 PATH_TO_WAIFU2X = os.path.abspath("../../dependencies/waifu2x-ncnn-vulkan/waifu2x-ncnn-vulkan")
 
 def convert_to_png(file_dds):
-    subprocess.run(PATH_TO_MOGRIFY +
-                    " -format png " +
-                    "\""+file_dds+"\"",
-                   cwd = os.getcwd(),
-                   shell = True)
+    with open("gimp-convert.bat", "r") as f:
+        main_script = f.read()
+
+    with open("gimp-convert-png.fu", "r") as f:
+        script = f.read().replace("\n", " ").replace("{{filename}}", file_dds) \
+            .replace("{{output}}", file_dds[:-3]+"PNG").replace("\\", "\\\\").replace("\"", "\\\"")
+
+    subprocess.run(main_script + " \"" + script + "\" --batch \"(gimp-quit 1)\"",
+        cwd = os.getcwd(),
+        shell = True)
 
 def convert_to_dds(file_png):
     with open("gimp-convert.bat", "r") as f:
         main_script = f.read()
 
-    with open("gimp-convert.fu", "r") as f:
+    with open("gimp-convert-dds.fu", "r") as f:
         script = f.read().replace("\n", " ").replace("{{filename}}", file_png) \
             .replace("{{output}}", file_png[:-3]+"DDS").replace("\\", "\\\\").replace("\"", "\\\"")
 

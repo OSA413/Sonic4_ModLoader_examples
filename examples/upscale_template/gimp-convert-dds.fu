@@ -1,7 +1,7 @@
 (
     let* ((filename "{{filename}}")
             (output "{{output}}")
-            (image (car (gimp-file-load 0 filename filename)))
+            (image (car (gimp-file-load 1 filename filename)))
             (drawable (car (gimp-image-get-active-layer image))))
     (file-dds-save 1 image drawable output output 3 0 0 0 0 0 0 0 0 2.2 0 0 0.5)
 )
