@@ -48,18 +48,22 @@ def generate_and_save(file_png):
 the_files = glob.glob("./place root here/**/*.dds", recursive = True)
 
 for i in range(len(the_files)):
-    f = the_files[i]
-    file = os.path.abspath(f.replace("\\", "/"))
-    print(file)
-    print(str(i) + "/" + str(len(the_files)))
-    convert_to_png(file)
-    generate_and_save(file[:-3]+"png")
-    generate_and_save(file[:-3]+"png")
-    convert_to_dds(file[:-3]+"png")
-    os.remove(file[:-3]+"png")
+    try:
+        f = the_files[i]
+        file = os.path.abspath(f.replace("\\", "/"))
+        print(file)
+        print(str(i) + "/" + str(len(the_files)))
+        convert_to_png(file)
+        if (not os.path.isfile(file[:-3]+"png")):
+            continue
+        generate_and_save(file[:-3]+"png")
+        generate_and_save(file[:-3]+"png")
+        convert_to_dds(file[:-3]+"png")
+        os.remove(file[:-3]+"png")
 
-    other_place = file.replace("place root here", "converted")
-    if not os.path.exists(os.path.dirname(other_place)):
-        os.makedirs(os.path.dirname(other_place))
-    os.rename(file, other_place)
-
+        other_place = file.replace("place root here", "converted")
+        if not os.path.exists(os.path.dirname(other_place)):
+            os.makedirs(os.path.dirname(other_place))
+        os.rename(file, other_place)
+    except:
+        pass
